@@ -47,6 +47,7 @@ def iniciar():
 
     largura = 900
     altura = 600
+    # Centraliza a janela na tela.
     largura_tela = janela.winfo_screenwidth()
     altura_tela = janela.winfo_screenheight()
     pos_x = (largura_tela - largura) // 2
@@ -56,6 +57,7 @@ def iniciar():
     barra = tk.Frame(janela)
     barra.pack(fill="x")
 
+    # Estilo único aplicado em todos os botões da barra.
     estilo_botao = {
         "bg": "#ff69b4",
         "fg": "white",
@@ -81,6 +83,7 @@ def iniciar():
     canvas = tk.Canvas(janela, bg="white")
     canvas.pack(fill="both", expand=True)
 
+    # Liga os eventos do mouse para desenhar no canvas.
     canvas.bind("<Button-1>", clique)
     canvas.bind("<B1-Motion>", arrastar)
     canvas.bind("<ButtonRelease-1>", soltar)
