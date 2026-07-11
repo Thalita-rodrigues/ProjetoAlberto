@@ -44,20 +44,39 @@ def iniciar():
 
     janela = tk.Tk()
     janela.title("Paint Imperativo")
-    janela.geometry("900x600")
+
+    largura = 900
+    altura = 600
+    largura_tela = janela.winfo_screenwidth()
+    altura_tela = janela.winfo_screenheight()
+    pos_x = (largura_tela - largura) // 2
+    pos_y = (altura_tela - altura) // 2
+    janela.geometry(f"{largura}x{altura}+{pos_x}+{pos_y}")
 
     barra = tk.Frame(janela)
     barra.pack(fill="x")
 
-    tk.Button(barra, text="Retângulo", command=selecionar_retangulo).pack(side="left")
+    estilo_botao = {
+        "bg": "#ff69b4",
+        "fg": "white",
+        "activebackground": "#ff85c1",
+        "activeforeground": "white",
+        "highlightthickness": 2,
+        "highlightbackground": "#ff1493",
+        "highlightcolor": "#ff1493",
+        "bd": 2,
+        "relief": "ridge"
+    }
 
-    tk.Button(barra, text="Oval", command=selecionar_oval).pack(side="left")
+    tk.Button(barra, text="Retângulo", command=selecionar_retangulo, **estilo_botao).pack(side="left")
 
-    tk.Button(barra, text="Círculo", command=selecionar_circulo).pack(side="left")
+    tk.Button(barra, text="Oval", command=selecionar_oval, **estilo_botao).pack(side="left")
 
-    tk.Button(barra, text="Cor da borda", command=mudar_borda).pack(side="left")
+    tk.Button(barra, text="Círculo", command=selecionar_circulo, **estilo_botao).pack(side="left")
 
-    tk.Button(barra, text="Cor preenchimento", command=mudar_preenchimento).pack(side="left")
+    tk.Button(barra, text="Cor da borda", command=mudar_borda, **estilo_botao).pack(side="left")
+
+    tk.Button(barra, text="Cor preenchimento", command=mudar_preenchimento, **estilo_botao).pack(side="left")
 
     canvas = tk.Canvas(janela, bg="white")
     canvas.pack(fill="both", expand=True)

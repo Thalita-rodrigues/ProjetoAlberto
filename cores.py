@@ -1,3 +1,5 @@
+from tkinter.colorchooser import askcolor
+
 def escolher_cor_borda():
     """Abre a paleta de cores para o contorno e retorna a cor em formato hexadecimal.
     Se a seleção for cancelada, retorna 'black' como cor padrão.
