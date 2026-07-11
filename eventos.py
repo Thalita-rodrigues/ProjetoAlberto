@@ -13,6 +13,7 @@ def clique(evento):
     global x_inicial
     global y_inicial
 
+    # Guarda o ponto inicial do desenho.
     x_inicial = evento.x
     y_inicial = evento.y
 
@@ -20,6 +21,7 @@ def clique(evento):
 def arrastar(evento):
     global preview
 
+    # Remove a prévia anterior antes de desenhar a nova.
     if preview is not None:
         interface.canvas.delete(preview)
 
@@ -48,6 +50,7 @@ def arrastar(evento):
         )
 
     elif interface.ferramenta == "circulo":
+        # Mantém largura e altura iguais para formar um círculo.
         raio = min(abs(evento.x - x_inicial), abs(evento.y - y_inicial))
 
         if evento.x < x_inicial:
@@ -75,6 +78,7 @@ def arrastar(evento):
 def soltar(evento):
     global preview
 
+    # Limpa a prévia e desenha a forma final.
     if preview is not None:
         interface.canvas.delete(preview)
         preview = None
