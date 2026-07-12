@@ -1,11 +1,11 @@
-# janela,canvas e toolbar
 import tkinter as tk
 
-from eventos import clique, arrastar, soltar
+from eventos import ControladorDesenho
 from cores import escolher_cor_borda, escolher_cor_preenchimento
 
 janela = None
 canvas = None
+controlador = None
 
 ferramenta = "retangulo"
 
@@ -16,16 +16,36 @@ cor_preenchimento = "white"
 def selecionar_retangulo():
     global ferramenta
     ferramenta = "retangulo"
+    if controlador is not None:
+        controlador.selecionar_ferramenta(ferramenta)
 
 
 def selecionar_oval():
     global ferramenta
     ferramenta = "oval"
+    if controlador is not None:
+        controlador.selecionar_ferramenta(ferramenta)
 
 
 def selecionar_circulo():
     global ferramenta
     ferramenta = "circulo"
+    if controlador is not None:
+        controlador.selecionar_ferramenta(ferramenta)
+
+
+def selecionar_poligono():
+    global ferramenta
+    ferramenta = "poligono"
+    if controlador is not None:
+        controlador.selecionar_ferramenta(ferramenta)
+
+
+def selecionar_mao_livre():
+    global ferramenta
+    ferramenta = "mao_livre"
+    if controlador is not None:
+        controlador.selecionar_ferramenta(ferramenta)
 
 
 def mudar_borda():
@@ -41,9 +61,10 @@ def mudar_preenchimento():
 def iniciar():
     global janela
     global canvas
+    global controlador
 
     janela = tk.Tk()
-    janela.title("Paint Imperativo")
+    janela.title("Paint OO")
 
     largura = 900
     altura = 600
@@ -76,6 +97,10 @@ def iniciar():
 
     tk.Button(barra, text="Círculo", command=selecionar_circulo, **estilo_botao).pack(side="left")
 
+    tk.Button(barra, text="Polígono", command=selecionar_poligono, **estilo_botao).pack(side="left")
+
+    tk.Button(barra, text="Mão livre", command=selecionar_mao_livre, **estilo_botao).pack(side="left")
+
     tk.Button(barra, text="Cor da borda", command=mudar_borda, **estilo_botao).pack(side="left")
 
     tk.Button(barra, text="Cor preenchimento", command=mudar_preenchimento, **estilo_botao).pack(side="left")
@@ -83,9 +108,16 @@ def iniciar():
     canvas = tk.Canvas(janela, bg="white")
     canvas.pack(fill="both", expand=True)
 
-    # Liga os eventos do mouse para desenhar no canvas.
-    canvas.bind("<Button-1>", clique)
-    canvas.bind("<B1-Motion>", arrastar)
-    canvas.bind("<ButtonRelease-1>", soltar)
+    controlador = ControladorDesenho(
+        canvas,
+        lambda: cor_borda,
+        lambda: cor_preenchimento,
+    )
+    controlador.selecionar_ferramenta(ferramenta)
 
-    janela.mainloop() 
+    # Liga os eventos do mouse para desenhar no canvas.
+    canvas.bind("<Button-1>", controlador.clique)
+    canvas.bind("<B1-Motion>", controlador.arrastar)
+    canvas.bind("<ButtonRelease-1>", controlador.soltar)
+
+    janela.mainloop()
