@@ -12,9 +12,10 @@ Construir uma aplicação gráfica para desenhar formas em um canvas, evoluindo 
 
 ## Estrutura atual do projeto
 - main.py: ponto de entrada da aplicação.
-- interface.py: cria a janela, barra de botões, canvas e conecta eventos do mouse.
-- eventos.py: trata clique, arraste e soltura do mouse, incluindo pré-visualização das figuras.
-- desenho.py: funções responsáveis por desenhar retângulo, oval e círculo no canvas.
+- interface.py: cria a janela, barra de botões, canvas e liga o controlador de desenho.
+- eventos.py: concentra o controlador OO que trata clique, arraste e soltura do mouse.
+- figuras.py: classe base Figura e subclasses para retângulo, oval, círculo, polígono e mão livre.
+- desenho.py: funções legadas de desenho mantidas no histórico do projeto.
 - cores.py: seleção de cor da borda e de preenchimento com paleta do sistema.
 
 ## Entrega 1 - imperativa.1
@@ -36,18 +37,24 @@ Aspectos de interface já aplicados:
 1. Abra a pasta do projeto no terminal.
 2. Execute:
 
-```bash
+bash
 python main.py
-```
 
-## Entrega 2 - OO.1 (visão geral)
-Próxima fase prevista para migrar a solução imperativa para orientação a objetos.
 
-Planejamento geral:
-- Criar hierarquia de classes para figuras.
-- Reorganizar o código para uso dessas classes.
-- Incluir novos tipos de desenho, como polígonos.
-- Melhorar separação em módulos.
+## Entrega 2 - OO.1
+Refatoração concluída para uma abordagem orientada a objetos.
+
+Funcionalidades implementadas nesta entrega:
+- Hierarquia de classes com Figura como classe base.
+- Subclasses para retângulo, oval, círculo, polígono regular e mão livre.
+- Controlador OO para pré-visualização e desenho final no canvas.
+- Separação das figuras em módulo próprio.
+- Novos tipos de desenho: polígono e mão livre.
+
+Organização resultante:
+- As figuras sabem desenhar a própria prévia e a versão final.
+- A interface monta a janela e delega a interação ao controlador.
+- O fluxo de desenho deixou de depender de condicionais espalhadas em vários pontos.
 
 ## Entrega 3 - OO.MVC.1 (visão geral)
 Etapa focada em organizar a aplicação com padrão MVC.
