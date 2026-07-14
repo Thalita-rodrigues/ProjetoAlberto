@@ -1,8 +1,10 @@
 from figuras import Circulo
 from figuras import Oval
-from figuras import MaoLivre
 from figuras import PoligonoRegular
 from figuras import Retangulo
+from figuras import MaoLivre
+from figuras import Linha
+from figuras import Rabisco
 
 
 class ControladorDesenho:
@@ -24,6 +26,9 @@ class ControladorDesenho:
         # Utilizado para controlar o desenho à mão livre
         self.figura_mao_livre = None
 
+        # Guarda a última linha desenhada
+        self.ultima_linha = None
+
     def selecionar_ferramenta(self, ferramenta):
         self.ferramenta = ferramenta
 
@@ -32,25 +37,31 @@ class ControladorDesenho:
         self.x_inicial = evento.x
         self.y_inicial = evento.y
 
-        # Se a ferramenta for mão livre, cria o primeiro ponto do desenho
-        if self.ferramenta == "mao_livre":
+        if self.ferramenta in ("mao_livre", "rabisco"):
+
             cor_borda = self.obter_cor_borda()
             cor_preenchimento = self.obter_cor_preenchimento()
 
-            self.figura_mao_livre = MaoLivre(
+            if self.ferramenta == "mao_livre":
+                classe = MaoLivre
+            else:
+                classe = Rabisco
+
+            self.figura_mao_livre = classe(
                 evento.x,
                 evento.y,
                 evento.x,
                 evento.y,
                 cor_borda,
                 cor_preenchimento,
-            )
+    )
 
             self._limpar_previa()
 
+
     def arrastar(self, evento):
         # Atualiza continuamente o desenho enquanto o mouse é arrastado
-        if self.ferramenta == "mao_livre":
+        if self.ferramenta in ("mao_livre","rabisco"):
             if self.figura_mao_livre is None:
                 self.clique(evento)
 
@@ -67,7 +78,7 @@ class ControladorDesenho:
 
     def soltar(self, evento):
         # Ao soltar o mouse, finaliza o desenho
-        if self.ferramenta == "mao_livre":
+        if self.ferramenta in ("mao_livre","rabisco"):
             if self.figura_mao_livre is not None:
                 self.figura_mao_livre.adicionar_ponto(evento.x, evento.y)
 
@@ -78,7 +89,16 @@ class ControladorDesenho:
 
         self._limpar_previa()
         figura = self._criar_figura(evento.x, evento.y)
-        figura.desenhar(self.canvas)
+
+        if self.ferramenta == "linha":
+            # Remove a linha anterior
+            if self.ultima_linha is not None:
+                    self.canvas.delete(self.ultima_linha)
+             # Desenha a nova linha e guarda seu ID
+            self.ultima_linha = figura.desenhar(self.canvas)
+
+        else:
+                figura.desenhar(self.canvas)
 
     def _limpar_previa(self):
         # Remove a figura temporária da tela
@@ -104,8 +124,27 @@ class ControladorDesenho:
         if self.ferramenta == "poligono":
             return PoligonoRegular(self.x_inicial, self.y_inicial, x_final, y_final, cor_borda, cor_preenchimento)
 
-        if self.ferramenta == "mao_livre":
-            return MaoLivre(self.x_inicial, self.y_inicial, x_final, y_final, cor_borda, cor_preenchimento)
+        if self.ferramenta in ("mao_livre", "rabisco"):
 
+            classe = MaoLivre if self.ferramenta == "mao_livre" else Rabisco
+
+            return classe(
+                self.x_inicial,
+                self.y_inicial,
+                x_final,
+                y_final,
+                cor_borda,
+                cor_preenchimento,
+    )
+        if self.ferramenta == "linha":
+            return Linha(
+            self.x_inicial,
+            self.y_inicial,
+            x_final,
+            y_final,
+            cor_borda,
+            cor_preenchimento
+    )
+        
         # Caso nenhuma ferramenta seja reconhecida, desenha um retângulo
         return Retangulo(self.x_inicial, self.y_inicial, x_final, y_final, cor_borda, cor_preenchimento)
