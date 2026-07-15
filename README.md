@@ -10,13 +10,26 @@ Construir uma aplicação gráfica para desenhar formas em um canvas, evoluindo 
 - Tkinter
 - Git e GitHub para versionamento e trabalho em equipe
 
-## Estrutura atual do projeto
-- main.py: ponto de entrada da aplicação.
-- interface.py: cria a janela, barra de botões, canvas e liga o controlador de desenho.
-- eventos.py: concentra o controlador OO que trata clique, arraste e soltura do mouse.
-- figuras.py: classe base Figura e subclasses para retângulo, oval, círculo, polígono e mão livre.
-- desenho.py: funções legadas de desenho mantidas no histórico do projeto.
-- cores.py: seleção de cor da borda e de preenchimento com paleta do sistema.
+## Estrutura ATUAL do projeto
+O projeto está organizado seguindo o padrão Model-View-Controller (MVC), separando a lógica da aplicação em três camadas principais:
+
+### models/
+Responsável pelas regras de negócio e representação dos dados da aplicação.
+
+- figuras.py → Define as classes das figuras geométricas (Retângulo, Oval, Círculo, Linha, Rabisco, etc.).
+- desenho.py → Gerencia os desenhos criados no canvas.
+- cores.py → Gerencia as cores de borda e preenchimento utilizadas pelas figuras.
+
+### views/
+Responsável pela interface gráfica da aplicação.
+
+- interface.py → Cria a janela principal, o canvas e os componentes visuais.
+
+### controller/
+Responsável por intermediar a comunicação entre a interface e o modelo.
+
+- eventos.py → Trata os eventos do mouse e executa as ações de desenho.
+- controlador.py → Gerencia a lógica das ferramentas disponíveis e coordena a interação entre View e Model.
 
 ## Entrega 1 - imperativa.1
 Nesta etapa, o foco foi a versão imperativa funcional do paint.
@@ -50,6 +63,7 @@ Funcionalidades implementadas nesta entrega:
 - Controlador OO para pré-visualização e desenho final no canvas.
 - Separação das figuras em módulo próprio.
 - Novos tipos de desenho: polígono e mão livre.
+- Adicionamos linhas e rabiscos
 
 Organização resultante:
 - As figuras sabem desenhar a própria prévia e a versão final.
