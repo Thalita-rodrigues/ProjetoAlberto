@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 from controller.controlador import ControladorDesenho
 from models.cores import GerenciadorCores
@@ -80,6 +81,8 @@ class InterfaceGrafica:
                   command=self.mudar_preenchimento,
                   **estilo_botao).pack(side="left")
         
+        tk.Button(barra,text="?",width=3,command=self.ajuda_poligono,bg="#87CEFA",fg="black",font=("Arial", 10, "bold")).pack(side="right", padx=5)
+        
         tk.Button(barra,text="Limpar",command=self.limpar_canvas,**estilo_botao).pack(side="left")
 
         self.canvas = tk.Canvas(self.janela, bg="white")
@@ -99,6 +102,16 @@ class InterfaceGrafica:
         self.canvas.bind("<ButtonRelease-1>", self.controlador.soltar)
         self.canvas.bind("<Double-Button-1>", self.controlador.finalizar_poligono)
 
+    def ajuda_poligono(self):
+        messagebox.showinfo(
+            "Como desenhar um polígono",
+            "1. Selecione a ferramenta Polígono.\n\n"
+            "2. Clique para adicionar cada vértice.\n\n"
+            "3. Após criar pelo menos três vértices,\n"
+            "clique duas vezes no ponto de fim \n"
+            "desejado para fechar o polígono."
+    )
+    
     def limpar_canvas(self):
         if self.controlador is not None:
             self.controlador.limpar_canvas()
