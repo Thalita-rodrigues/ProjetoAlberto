@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import math
+
 # Classe base para todas as figuras do programa.
 # Ela reúne os atributos e métodos que todas as figuras possuem em comum.
 class Figura(ABC):

@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from controller.controlador import ControladorDesenho
-from models.cores import escolher_cor_borda, escolher_cor_preenchimento
+from models.cores import GerenciadorCores
 from models.desenho import Desenho
 
 
@@ -79,6 +79,8 @@ class InterfaceGrafica:
         tk.Button(barra, text="Cor preenchimento",
                   command=self.mudar_preenchimento,
                   **estilo_botao).pack(side="left")
+        
+        tk.Button(barra,text="Limpar",command=self.limpar_canvas,**estilo_botao).pack(side="left")
 
         self.canvas = tk.Canvas(self.janela, bg="white")
         self.canvas.pack(fill="both", expand=True)
@@ -96,6 +98,10 @@ class InterfaceGrafica:
         self.canvas.bind("<B1-Motion>", self.controlador.arrastar)
         self.canvas.bind("<ButtonRelease-1>", self.controlador.soltar)
         self.canvas.bind("<Double-Button-1>", self.controlador.finalizar_poligono)
+
+    def limpar_canvas(self):
+        if self.controlador is not None:
+            self.controlador.limpar_canvas()
 
     def selecionar_retangulo(self):
         self.ferramenta = "retangulo"
@@ -133,14 +139,10 @@ class InterfaceGrafica:
             self.controlador.selecionar_ferramenta(self.ferramenta)
 
     def mudar_borda(self):
-        cor = escolher_cor_borda()
-        if cor:
-            self.cor_borda = cor
+        self.cor_borda = GerenciadorCores.escolher_cor_borda()
 
     def mudar_preenchimento(self):
-        cor = escolher_cor_preenchimento()
-        if cor:
-            self.cor_preenchimento = cor
+        self.cor_preenchimento = GerenciadorCores.escolher_cor_preenchimento()
 
     def executar(self):
         self.criar_widgets()

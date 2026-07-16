@@ -1,1 +1,0 @@
-from controller.controlador import ControladorDesenho
