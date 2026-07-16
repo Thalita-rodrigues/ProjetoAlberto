@@ -113,7 +113,11 @@ class InterfaceGrafica:
     )
     
     def limpar_canvas(self):
-        if self.controlador is not None:
+        resposta = messagebox.askyesno(
+            "Confirmar",
+            "Deseja realmente apagar todos os desenhos?"
+        )
+        if resposta and self.controlador is not None:   
             self.controlador.limpar_canvas()
 
     def selecionar_retangulo(self):
