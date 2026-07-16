@@ -136,11 +136,22 @@ class ControladorDesenho:
 		if self.preview is not None:
 			self.canvas.delete(self.preview)
 			self.preview = None
-
+	def limpar_canvas(self):
+		self.desenho.limpar()
+		self.canvas.delete("all")
+  
+		self.preview = None
+		self.figura_mao_livre = None
+		self.ultima_linha = None
+		self.pontos_poligono.clear()
+  
+		if self.preview_poligono is not None:
+			self.canvas.delete(self.preview_poligono)
+			self.preview_poligono = None
+  
 	def _redesenhar_tudo(self):
 		self.canvas.delete("all")
 		self.desenho.desenhar(self.canvas)
-
 	def _criar_figura(self, x_final, y_final):
 		cor_borda = self.obter_cor_borda()
 		cor_preenchimento = self.obter_cor_preenchimento()
