@@ -2,7 +2,7 @@ import tkinter as tk
 
 from controller.eventos import ControladorDesenho
 from models.cores import escolher_cor_borda, escolher_cor_preenchimento
-
+from models.desenho import Desenho
 janela = None
 canvas = None
 controlador = None
@@ -138,8 +138,10 @@ def iniciar():
     canvas.pack(fill="both", expand=True)
 
     # Cria o controlador responsável por gerenciar os desenhos.
+    instancia_desenho= Desenho()
     controlador = ControladorDesenho(
         canvas,
+        instancia_desenho,
         lambda: cor_borda,
         lambda: cor_preenchimento,
     )
@@ -153,6 +155,6 @@ def iniciar():
     canvas.bind("<Button-1>", controlador.clique)
     canvas.bind("<B1-Motion>", controlador.arrastar)
     canvas.bind("<ButtonRelease-1>", controlador.soltar)
-
+    canvas.bind("<Double-Button-1>", controlador.finalizar_poligono)
     # Mantém a interface em execução até o usuário fechá-la.
     janela.mainloop()

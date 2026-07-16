@@ -92,37 +92,23 @@ class Circulo(Figura):
             y_final,
             **self._opcoes_desenho(previsualizacao),
         )
-
-
-# Classe responsável pelo desenho de polígonos regulares.
-# Por padrão, cria um pentágono (5 lados), mas esse valor pode ser alterado.
+#recebe lista de vertices e desenha um poligono com eles
 class PoligonoRegular(Figura):
-    def __init__(self, x_inicial, y_inicial, x_final, y_final, cor_borda, cor_preenchimento, lados=5):
-        super().__init__(x_inicial, y_inicial, x_final, y_final, cor_borda, cor_preenchimento)
-        self.lados = lados
+    def __init__(self, pontos, cor_borda, cor_preenchimento):
+        super().__init__(0, 0, 0, 0, cor_borda, cor_preenchimento)
+        self.pontos = pontos
 
-    # Calcula todos os vértices do polígono utilizando funções trigonométricas.
-    def _calcular_pontos(self):
-        centro_x = (self.x_inicial + self.x_final) / 2
-        centro_y = (self.y_inicial + self.y_final) / 2
-        raio = min(abs(self.x_final - self.x_inicial), abs(self.y_final - self.y_inicial)) / 2
-        angulo_inicial = -math.pi / 2
+    def _coordenadas(self):
+        coordenadas = []
 
-        pontos = []
+        for x, y in self.pontos:
+            coordenadas.extend([x, y])
 
-        # Calcula cada vértice de acordo com a quantidade de lados.
-        for indice in range(self.lados):
-            angulo = angulo_inicial + (2 * math.pi * indice / self.lados)
-            pontos.extend([
-                round(centro_x + raio * math.cos(angulo)),
-                round(centro_y + raio * math.sin(angulo)),
-            ])
-
-        return pontos
+        return coordenadas
 
     def _desenhar(self, canvas, previsualizacao=False):
         return canvas.create_polygon(
-            *self._calcular_pontos(),
+            *self._coordenadas(),
             **self._opcoes_desenho(previsualizacao),
         )
 
