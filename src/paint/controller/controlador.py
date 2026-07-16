@@ -151,7 +151,9 @@ class ControladorDesenho:
   
 	def _redesenhar_tudo(self):
 		self.canvas.delete("all")
-		self.desenho.desenhar(self.canvas)
+		for figura in self.desenho.obter_figuras():
+			figura.desenhar(self.canvas)
+  
 	def _criar_figura(self, x_final, y_final):
 		cor_borda = self.obter_cor_borda()
 		cor_preenchimento = self.obter_cor_preenchimento()

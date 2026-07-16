@@ -12,6 +12,5 @@ class Desenho:
     def limpar(self):
         self.figuras.clear()
 
-    def desenhar(self, canvas):
-        for figura in self.figuras:
-            figura.desenhar(canvas)
+    def obter_figuras(self):
+        return self.figuras
