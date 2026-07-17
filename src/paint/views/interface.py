@@ -44,33 +44,19 @@ class InterfaceGrafica:
             "bd": 2,
             "relief": "ridge",
         }
+        ferramentas = [
+            ("Retângulo", "retangulo"),
+            ("Oval", "oval"),
+            ("Círculo", "circulo"),
+            ("Polígono", "poligono"),
+            ("Mão livre", "mao_livre"),
+            ("Linha", "linha"),
+            ("Rabisco", "rabisco"),
+        ]
 
-        tk.Button(barra, text="Retângulo",
-                  command=self.selecionar_retangulo,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Oval",
-                  command=self.selecionar_oval,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Círculo",
-                  command=self.selecionar_circulo,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Polígono",
-                  command=self.selecionar_poligono,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Mão livre",
-                  command=self.selecionar_mao_livre,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Linha",
-                  command=self.selecionar_linha,
-                  **estilo_botao).pack(side="left")
-
-        tk.Button(barra, text="Rabisco",
-                  command=self.selecionar_rabisco,
+        for texto, ferramenta in ferramentas:
+         tk.Button(barra, text=texto,
+                  command=lambda f=ferramenta: self.selecionar_ferramenta(f),
                   **estilo_botao).pack(side="left")
 
         tk.Button(barra, text="Cor da borda",
@@ -111,6 +97,13 @@ class InterfaceGrafica:
             "clique duas vezes no ponto de fim \n"
             "desejado para fechar o polígono."
     )
+            
+    def selecionar_ferramenta(self, ferramenta):
+        self.ferramenta = ferramenta
+
+        if self.controlador:
+            self.controlador.selecionar_ferramenta(ferramenta)
+    
     
     def limpar_canvas(self):
         resposta = messagebox.askyesno(
@@ -119,41 +112,6 @@ class InterfaceGrafica:
         )
         if resposta and self.controlador is not None:   
             self.controlador.limpar_canvas()
-
-    def selecionar_retangulo(self):
-        self.ferramenta = "retangulo"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_oval(self):
-        self.ferramenta = "oval"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_circulo(self):
-        self.ferramenta = "circulo"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_poligono(self):
-        self.ferramenta = "poligono"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_mao_livre(self):
-        self.ferramenta = "mao_livre"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_linha(self):
-        self.ferramenta = "linha"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
-
-    def selecionar_rabisco(self):
-        self.ferramenta = "rabisco"
-        if self.controlador:
-            self.controlador.selecionar_ferramenta(self.ferramenta)
 
     def mudar_borda(self):
         self.cor_borda = GerenciadorCores.escolher_cor_borda()
