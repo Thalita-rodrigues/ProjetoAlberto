@@ -1,10 +1,12 @@
-from models.figuras import Circulo
-from models.figuras import Linha
-from models.figuras import MaoLivre
-from models.figuras import Oval
-from models.figuras import PoligonoRegular
-from models.figuras import Rabisco
-from models.figuras import Retangulo
+from models import (
+    Circulo,
+    Linha,
+    MaoLivre,
+    Oval,
+    Poligono,
+    Rabisco,
+    Retangulo,
+)
 
 
 class ControladorDesenho:
