@@ -27,6 +27,16 @@ class ControladorDesenho:
         if self.ferramenta_atual:
             self.ferramenta_atual.soltar(self, evento)
 
+    
+    def mover(self, evento):
+        if self.ferramenta_atual and hasattr(self.ferramenta_atual, 'mover'):
+            self.ferramenta_atual.mover(self, evento)
+
+    def duplo_clique(self, evento):
+        if self.ferramenta_atual and hasattr(self.ferramenta_atual, 'duplo_clique'):
+            self.ferramenta_atual.duplo_clique(self, evento)
+   
+
     def finalizar_poligono(self, evento=None):
         if hasattr(self.ferramenta_atual, 'finalizar'):
             self.ferramenta_atual.finalizar(self, evento)
@@ -42,29 +52,25 @@ class ControladorDesenho:
             figura.desenhar(self.canvas)
             
     def salvar_desenho(self, caminho_arquivo):
-        """Serializa a lista de figuras e salva em um arquivo."""
+        
         try:
             with open(caminho_arquivo, 'wb') as arquivo:
-                # Salva a lista de figuras do modelo
                 pickle.dump(self.desenho.obter_figuras(), arquivo)
-            return True, "Desenho salvo com sucesso!"
+            return True, 
         except Exception as e:
             return False, f"Erro ao salvar: {str(e)}"
 
     def carregar_desenho(self, caminho_arquivo):
-        """Lê o arquivo, desserializa as figuras e joga para a tela."""
+      
         try:
             with open(caminho_arquivo, 'rb') as arquivo:
                 figuras_salvas = pickle.load(arquivo)
             
-            # Limpa o canvas e o modelo atual
             self.limpar_canvas()
             
-            # Adiciona as figuras carregadas ao modelo
             for figura in figuras_salvas:
                 self.desenho.adicionar_figura(figura)
                 
-            # Manda desenhar tudo de novo
             self.redesenhar_tudo()
             return True, "Desenho carregado com sucesso!"
         except Exception as e:
@@ -76,3 +82,8 @@ class ControladorDesenho:
         self.limpar_previa()
         if hasattr(self.ferramenta_atual, 'cancelar'):
             self.ferramenta_atual.cancelar(self)
+        try:
+            from tools.ferramenta_linha import FerramentaLinha
+            FerramentaLinha.ultima_linha = None
+        except ImportError:
+            pass
