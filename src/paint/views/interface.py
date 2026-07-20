@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox,filedialog
 
 from controller.controlador import ControladorDesenho
 from models.cores import GerenciadorCores
@@ -75,6 +75,8 @@ class InterfaceGrafica:
         tk.Button(barra, text="Cor preenchimento", command=self.mudar_preenchimento, **estilo_botao).pack(side="left")
         tk.Button(barra, text="?", width=3, command=self.ajuda_poligono, bg="#87CEFA", fg="black", font=("Arial", 10, "bold")).pack(side="right", padx=5)
         tk.Button(barra, text="Limpar", command=self.limpar_canvas, **estilo_botao).pack(side="left")
+        tk.Button(barra, text="💾 Salvar", command=self.salvar_arquivo, **estilo_botao).pack(side="left", padx=(5, 0))
+        tk.Button(barra, text="📂 Abrir", command=self.abrir_arquivo, **estilo_botao).pack(side="left", padx=(0, 10))
 
         self.canvas = tk.Canvas(self.janela, bg="white")
         self.canvas.pack(fill="both", expand=True)
@@ -122,6 +124,36 @@ class InterfaceGrafica:
     def executar(self):
         self.criar_widgets()
         self.janela.mainloop()
+        
+    def salvar_arquivo(self):
+        # Abre a janela do SO para escolher onde salvar
+        caminho = filedialog.asksaveasfilename(
+            defaultextension=".pnt",
+            filetypes=[("Arquivo Paint MVC", "*.pnt"), ("Todos os Arquivos", "*.*")],
+            title="Salvar Desenho"
+        )
+        
+        if caminho: # Se o usuário não cancelou a janela
+            sucesso, mensagem = self.controlador.salvar_desenho(caminho)
+            if sucesso:
+                messagebox.showinfo("Sucesso", mensagem)
+            else:
+                messagebox.showerror("Erro", mensagem)
+
+    def abrir_arquivo(self):
+        # Abre a janela do SO para escolher o arquivo
+        caminho = filedialog.askopenfilename(
+            filetypes=[("Arquivo Paint MVC", "*.pnt"), ("Todos os Arquivos", "*.*")],
+            title="Abrir Desenho"
+        )
+        
+        if caminho: # Se o usuário escolheu um arquivo
+            sucesso, mensagem = self.controlador.carregar_desenho(caminho)
+            if sucesso:
+                # Opcional: mostrar mensagem de sucesso
+                pass 
+            else:
+                messagebox.showerror("Erro", mensagem)
 
 def iniciar():
     interface = InterfaceGrafica()
