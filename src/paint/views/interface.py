@@ -12,6 +12,7 @@ from models import Retangulo, Oval, Circulo, Linha, MaoLivre, Rabisco
 from tools.ferramenta_forma_basica import FerramentaFormaBasica
 from tools.ferramenta_maolivre import FerramentaMaoLivre
 from tools.ferramenta_poligono import FerramentaPoligono
+from tools.ferramenta_linha import FerramentaLinha
 
 
 class InterfaceGrafica:
@@ -57,7 +58,7 @@ class InterfaceGrafica:
             ("Retângulo", lambda: FerramentaFormaBasica(Retangulo)),
             ("Oval", lambda: FerramentaFormaBasica(Oval)),
             ("Círculo", lambda: FerramentaFormaBasica(Circulo)),
-            ("Linha", lambda: FerramentaFormaBasica(Linha)),
+            ("Linha", lambda: FerramentaLinha()),
             ("Polígono", lambda: FerramentaPoligono()),
             ("Mão livre", lambda: FerramentaMaoLivre(MaoLivre)),
             ("Rabisco", lambda: FerramentaMaoLivre(Rabisco)),

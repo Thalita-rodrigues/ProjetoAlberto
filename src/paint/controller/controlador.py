@@ -76,3 +76,8 @@ class ControladorDesenho:
         self.limpar_previa()
         if hasattr(self.ferramenta_atual, 'cancelar'):
             self.ferramenta_atual.cancelar(self)
+        try:
+            from tools.ferramenta_linha import FerramentaLinha
+            FerramentaLinha.ultima_linha = None
+        except ImportError:
+            pass
