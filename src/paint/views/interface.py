@@ -8,10 +8,11 @@ from models.desenho import Desenho
 # Importando os Modelos
 from models import Retangulo, Oval, Circulo, Linha, MaoLivre, Rabisco
 
-# Importando as Ferramentas (Estados)
+# Importando as Ferramentas
 from tools.ferramenta_forma_basica import FerramentaFormaBasica
 from tools.ferramenta_maolivre import FerramentaMaoLivre
 from tools.ferramenta_poligono import FerramentaPoligono
+from tools.ferramenta_linha import FerramentaLinha
 
 
 class InterfaceGrafica:
@@ -52,12 +53,12 @@ class InterfaceGrafica:
             "relief": "ridge",
         }
 
-        # Mapeamento de botões usando lambdas para instanciar os estados corretamente
+        
         ferramentas = [
             ("Retângulo", lambda: FerramentaFormaBasica(Retangulo)),
             ("Oval", lambda: FerramentaFormaBasica(Oval)),
             ("Círculo", lambda: FerramentaFormaBasica(Circulo)),
-            ("Linha", lambda: FerramentaFormaBasica(Linha)),
+            ("Linha", lambda: FerramentaLinha()),
             ("Polígono", lambda: FerramentaPoligono()),
             ("Mão livre", lambda: FerramentaMaoLivre(MaoLivre)),
             ("Rabisco", lambda: FerramentaMaoLivre(Rabisco)),
@@ -95,6 +96,8 @@ class InterfaceGrafica:
         self.canvas.bind("<B1-Motion>", self.controlador.arrastar)
         self.canvas.bind("<ButtonRelease-1>", self.controlador.soltar)
         self.canvas.bind("<Double-Button-1>", self.controlador.finalizar_poligono)
+        self.canvas.bind("<Motion>", self.controlador.mover)
+        self.canvas.bind("<Double-Button-1>", self.controlador.duplo_clique)
 
     def ajuda_poligono(self):
         messagebox.showinfo(
@@ -126,10 +129,10 @@ class InterfaceGrafica:
         self.janela.mainloop()
         
     def salvar_arquivo(self):
-        # Abre a janela do SO para escolher onde salvar
+        
         caminho = filedialog.asksaveasfilename(
             defaultextension=".pnt",
-            filetypes=[("Arquivo Paint MVC", "*.pnt"), ("Todos os Arquivos", "*.*")],
+            filetypes=[("Arquivo Paint MVC", ".pnt"), ("Todos os Arquivos", ".*")],
             title="Salvar Desenho"
         )
         
@@ -141,16 +144,16 @@ class InterfaceGrafica:
                 messagebox.showerror("Erro", mensagem)
 
     def abrir_arquivo(self):
-        # Abre a janela do SO para escolher o arquivo
+        
         caminho = filedialog.askopenfilename(
-            filetypes=[("Arquivo Paint MVC", "*.pnt"), ("Todos os Arquivos", "*.*")],
+            filetypes=[("Arquivo Paint MVC", ".pnt"), ("Todos os Arquivos", ".*")],
             title="Abrir Desenho"
         )
         
-        if caminho: # Se o usuário escolheu um arquivo
+        if caminho:
             sucesso, mensagem = self.controlador.carregar_desenho(caminho)
             if sucesso:
-                # Opcional: mostrar mensagem de sucesso
+                
                 pass 
             else:
                 messagebox.showerror("Erro", mensagem)

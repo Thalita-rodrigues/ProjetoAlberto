@@ -1,4 +1,4 @@
-from models import Poligono # Importe conforme o nome exato no seu models
+from models import Poligono
 from tools.ferramenta import Ferramenta
 
 class FerramentaPoligono(Ferramenta):
@@ -8,26 +8,44 @@ class FerramentaPoligono(Ferramenta):
 
     def clique(self, controlador, evento):
         self.pontos.append((evento.x, evento.y))
-        
+
+    def arrastar(self, controlador, evento):
+        pass
+
+    def mover(self, controlador, evento):
+        if not self.pontos:
+            return
+
         if self.preview_poligono is not None:
             controlador.canvas.delete(self.preview_poligono)
 
-        if len(self.pontos) > 1:
-            coordenadas = []
-            for px, py in self.pontos:
-                coordenadas.extend([px, py])
+        coordenadas = []
+        for px, py in self.pontos:
+            coordenadas.extend([px, py])
+            
+        coordenadas.extend([evento.x, evento.y])
 
+        
+        if len(coordenadas) == 4:
             self.preview_poligono = controlador.canvas.create_line(
                 *coordenadas,
                 fill=controlador.obter_cor_borda(),
                 width=2
             )
-
-    def arrastar(self, controlador, evento):
-        pass # Não faz nada ao arrastar
+        
+        elif len(coordenadas) >= 6:
+            self.preview_poligono = controlador.canvas.create_polygon(
+                *coordenadas,
+                outline=controlador.obter_cor_borda(),
+                fill=controlador.obter_cor_preenchimento(),
+                width=2
+            )
 
     def soltar(self, controlador, evento):
-        pass # Não faz nada ao soltar
+        pass 
+
+    def duplo_clique(self, controlador, evento):
+        self.finalizar(controlador)
 
     def finalizar(self, controlador, evento=None):
         if len(self.pontos) >= 3:
